@@ -32,12 +32,6 @@ pid = fork();
 }
 */
 
-int	ft_add_lcmd(char *str, t_cmd *cmd, int flag)
-{
-	return (1);
-
-}
-
 
 static int	ft_parse_quote(char *line, t_cmd *cmd)
 {
@@ -46,30 +40,31 @@ static int	ft_parse_quote(char *line, t_cmd *cmd)
 	i = 0;
 	if (cmd->flag & QUOTE)
 	{
+		puts("searching closing quote");
 		//on va peut etre devoir changer i en int pour le cas ou ya pas de quote fermant dans la line.
 		i = ft_search_closing_quote(line, cmd);
-		if (i == -1)
-			return (-1);
 	}
 	else
 	{
 		i = ft_search_opening_quote(line, cmd);
 	}
 	return (i);
-	
 }
 
 int			main(int ac, char **av, char **envp)
 {
 	char	*line;
-	char	**tab;
-	int		i;
 	int		ret;
 	t_cmd	cmd;
 
 	line = NULL;
+	
 	cmd.flag = 0;
 	cmd.head = NULL;
+	cmd.end = NULL;
+	cmd.envp = envp;
+	
+	ret = 0;
 	if (ac != 1)
 	{
 		printf("%s\n", av[1]);
@@ -78,16 +73,9 @@ int			main(int ac, char **av, char **envp)
 	while (get_next_line(STDIN_FILENO, &line) == 1)
 	{
 		ret = ft_parse_quote(line, &cmd);
-		i = 0;
-		printf("line is %s", line);
-		tab = ft_strsplit(line, ';');
-		while (tab[i])
-		{
-			printf("tab[%d] is %s\n", i, tab[i]);
-			i++;
-		}
+		printf("ret is %d\n", ret);
 		free(line);
 	}
-	
+	print_cmd(cmd);
 	return (0);
 }

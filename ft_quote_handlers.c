@@ -38,7 +38,6 @@ static int	ft_add_quote(char *line, t_cmd *cmd, char c)
 	}
 	else
 		str = ft_strndup(line, pos - line);
-	printf("str is %s\n", str);
 	if (str == NULL || (ft_add_lcmd(str, cmd, NEW | QUOTE) == -1))
 		return (-1);
 	return (pos == NULL ? 1 : ft_search_opening_quote(pos + 1, cmd));	

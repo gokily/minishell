@@ -18,10 +18,8 @@ int	ft_add_lcmd(char *str, t_cmd *cmd, int flag)
 {
 	t_lcmd		*elem;
 
-puts("in add lcmd");
 	if (flag & LAST)
 	{
-		puts("adding to the last elem");
 		elem = cmd->end;
 		elem->str = ft_strjoinfree(elem->str, str, LEFT | RIGHT);
 		if (elem->str == NULL)
@@ -30,7 +28,6 @@ puts("in add lcmd");
 	}
 	else
 	{
-		puts("new elem");
 		if (!(elem = ft_lcmd_new(str, flag)))
 			return (-1);
 		if (cmd->head == NULL)

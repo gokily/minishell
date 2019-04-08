@@ -39,15 +39,9 @@ static int	ft_parse_quote(char *line, t_cmd *cmd)
 
 	i = 0;
 	if (cmd->flag & QUOTE)
-	{
-		puts("searching closing quote");
-		//on va peut etre devoir changer i en int pour le cas ou ya pas de quote fermant dans la line.
 		i = ft_search_closing_quote(line, cmd);
-	}
 	else
-	{
 		i = ft_search_opening_quote(line, cmd);
-	}
 	return (i);
 }
 
@@ -70,10 +64,18 @@ int			main(int ac, char **av, char **envp)
 		printf("%s\n", av[1]);
 		return (1);
 	}
+	write(1, "$>", 3);
 	while (get_next_line(STDIN_FILENO, &line) == 1)
 	{
 		ret = ft_parse_quote(line, &cmd);
-		printf("ret is %d\n", ret);
+		if (ret == -1)
+			return (1);
+		if (cmd.flag & DQUOT)
+			write(STDOUT_FILENO,"dquote>", 8);
+		else if (cmd.flag & SQUOT)
+			write(1,"quote>", 7);
+		else
+			write(1,"$>",3);
 		free(line);
 	}
 	print_cmd(cmd);

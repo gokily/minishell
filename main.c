@@ -8,7 +8,7 @@
 #include "minishell.h"
 
 /*
-int		ft_do_cmd(void)
+int		ft_do_input(void)
 {
 	pid_t	pid;
 	pid_t	wpid;
@@ -33,51 +33,87 @@ pid = fork();
 */
 
 
-static int	ft_parse_quote(char *line, t_cmd *cmd)
+static int	ft_parse_semicol(t_linput *linput, t_cmd *cmd)
+{
+	char	*pos;
+
+	if ((pos = ft_strchr(linput->str, ';')))
+	{
+			if (cmd->flag & SEMICOL)
+			{
+				//treat the double ; error
+				return (0);
+			}
+	}
+	else
+	{
+		if (!(ft_fill_cmd(linput->str, cmd)))
+			return (0);
+	}
+}
+
+static int	ft_parse_input(t_input *input, t_cmd *cmd)
+{
+	t_linput	*linput;
+	t_cmd		*cmd;
+
+	if (!(cmd = ft_cmd_new()))
+		return (0);
+	linput = input->head;
+	while (linput != NULL)
+	{
+		ft_add_lcmd(cmd, linput);
+		linput = linput->next;
+	}
+	return (1);
+}
+
+static int	ft_parse_quote(char *line, t_input *input)
 {
 	int		i;
 
 	i = 0;
-	if (cmd->flag & QUOTE)
-		i = ft_search_closing_quote(line, cmd);
+	if (input->flag & QUOTE)
+		i = ft_search_closing_quote(line, input);
 	else
-		i = ft_search_opening_quote(line, cmd);
+		i = ft_search_opening_quote(line, input);
 	return (i);
 }
 
 int			main(int ac, char **av, char **envp)
 {
 	char	*line;
-	int		ret;
-	t_cmd	cmd;
+	t_gcmd	cmd;
 
 	line = NULL;
-	
 	cmd.flag = 0;
 	cmd.head = NULL;
 	cmd.end = NULL;
 	cmd.envp = envp;
-	
-	ret = 0;
 	if (ac != 1)
 	{
 		printf("%s\n", av[1]);
 		return (1);
 	}
-	write(1, "$>", 3);
+	write(STDOUT_FILENO, "$>", 3);
 	while (get_next_line(STDIN_FILENO, &line) == 1)
 	{
-		ret = ft_parse_quote(line, &cmd);
-		if (ret == -1)
+		if ((ft_parse_line(line, &cmd)) == -1)
+		{
+			//free all
 			return (1);
-		if (cmd.flag & DQUOT)
+		}
+		if (!(cmd.flag & QUOTE))
+		{
+			if (!(ft_do_cmd(cmd)))
+				return (1);
+			write(STDOUT_FILENO,"$>",3);
+		}
+		else if (cmd.flag & DQUOT)
 			write(STDOUT_FILENO,"dquote>", 8);
-		else if (cmd.flag & SQUOT)
-			write(1,"quote>", 7);
 		else
-			write(1,"$>",3);
+			write(STDOUT_FILENO,"quote>", 7);
 		free(line);
 	}
-	print_cmd(cmd);
 	return (0);
 }

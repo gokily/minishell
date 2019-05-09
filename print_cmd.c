@@ -1,11 +1,11 @@
 #include "minishell.h"
 #include <stdio.h>
 
-int		print_cmd(t_cmd cmd)
+int		print_input(t_input input)
 {
-	t_lcmd *elem;
+	t_linput *elem;
 
-	elem = cmd.head;
+	elem = input.head;
 	while (elem != NULL)
 	{
 		printf("elem has |%s| in it\n", elem->str);

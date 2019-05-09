@@ -25,17 +25,11 @@ typedef struct		s_gcmd
 	char			**envp;
 }					t_gcmd;
 
+int		ft_parse_line(char *line, t_gcmd *cmd);
+int		ft_do_cmd(t_gcmd *cmd);
 
-int	ft_search_opening_quote(char *line, t_input *input);
-int	ft_search_closing_quote(char *line, t_input *input);
+int		ft_add_lcmd(t_gcmd *cmd, char *line, int i);
+int		ft_reset_cmd(t_gcmd *cmd);
 
-int	ft_add_linput(char *str, t_input *input, int flag);
-
-t_cmd	*ft_cmd_new(void);
-int	ft_add_quote_cmd(t_linput *linput, t_cmd *cmd);
-int	ft_fill_cmd(char *str, t_cmd *cmd);
-
-//debug
-int		print_input(t_input input);
 
 #endif

@@ -3,8 +3,8 @@
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-#include "libft/libft.h"
-#include "libft/get_next_line.h"
+#include "libft/incl/libft.h"
+#include "libft/incl/get_next_line.h"
 #include "minishell.h"
 
 /*
@@ -32,7 +32,7 @@ pid = fork();
 }
 */
 
-
+/*
 static int	ft_parse_semicol(t_linput *linput, t_cmd *cmd)
 {
 	char	*pos;
@@ -79,6 +79,7 @@ static int	ft_parse_quote(char *line, t_input *input)
 		i = ft_search_opening_quote(line, input);
 	return (i);
 }
+ */
 
 int			main(int ac, char **av, char **envp)
 {
@@ -105,7 +106,7 @@ int			main(int ac, char **av, char **envp)
 		}
 		if (!(cmd.flag & QUOTE))
 		{
-			if (!(ft_do_cmd(cmd)))
+			if (ft_do_cmd(&cmd) == -1)
 				return (1);
 			write(STDOUT_FILENO,"$>",3);
 		}

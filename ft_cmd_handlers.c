@@ -2,14 +2,14 @@
 #include "libft/incl/libft.h"
 #include "minishell.h"
 
-static t_lcmd	*ft_lcmd_new(char *line, int i)
+static t_lcmd	*ft_lcmd_new(char *cmd_str)
 {
 	t_lcmd	*lcmd;
 
 	if (!(lcmd = malloc(sizeof(t_lcmd))))
 		return (NULL);
 	lcmd->n = 0;
-	if (!(lcmd->cmd = ft_strndup(line, i)))
+	if (!(lcmd->cmd = cmd_str))
 		return (NULL);
 	lcmd->next = NULL;
 	return (lcmd);
@@ -29,20 +29,28 @@ static void	ft_lcmd_push(t_lcmd *elem, t_gcmd *cmd)
 	}
 }
 
+void	ft_freenull(void *tmp)
+{
+	if (tmp == NULL)
+		return ;
+	free(tmp);
+	tmp = NULL;
+}
+
 int		ft_add_lcmd(t_gcmd *cmd, char *line, int i)
 {
 	t_lcmd	*elem;
-
-	if (!(elem = ft_lcmd_new(line, i)))
+	char	*cmd_str;
+	
+	cmd_str = cmd->rst != NULL ? ft_strjoinfree(cmd->rst, ft_strndup(line, i),
+		LEFT | RIGHT) : ft_strndup(line, i);
+	if (cmd_str == NULL)
+		return (-1);
+	ft_freenull(cmd->rst);
+	if (!(elem = ft_lcmd_new(cmd_str)))
 		return (-1);
 	ft_lcmd_push(elem, cmd);
 	return (0);
-}
-
-void	ft_freenull(void *tmp)
-{
-	free(tmp);
-	tmp = NULL;
 }
 
 int		ft_reset_cmd(t_gcmd *cmd)
@@ -62,6 +70,7 @@ int		ft_reset_cmd(t_gcmd *cmd)
 	}
 	cmd->head = NULL;
 	cmd->end = NULL;
+	ft_freenull(cmd->rst);
 	cmd->flag = 0; //Pas sur pour celui la.
 	return (0);
 }

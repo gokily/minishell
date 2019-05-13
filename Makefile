@@ -15,7 +15,7 @@ LIBFT	=	./libft/libft.a
 
 LIBFTFLAG	=	-lft -L libft
 
-all	:	$(NAME)
+all	:	$(LIBFT) $(NAME) 
 
 $(NAME) : $(OBJ)
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LIBFTFLAG)
@@ -27,10 +27,11 @@ $(LIBFT) :
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 clean :
+	make -C libft clean
 	/bin/rm -f $(OBJ)
 
 fclean : clean
-	/bin/rm -f $(NAME)
+	/bin/rm -f $(NAME) $(LIBFT)
 
 re : fclean all
 

@@ -22,6 +22,7 @@ typedef struct		s_gcmd
 	t_lcmd			*head;
 	t_lcmd			*end;
 	int				flag;
+	char			*rst;
 	char			**envp;
 }					t_gcmd;
 

@@ -29,14 +29,6 @@ static void	ft_lcmd_push(t_lcmd *elem, t_gcmd *cmd)
 	}
 }
 
-void	ft_freenull(void *tmp)
-{
-	if (tmp == NULL)
-		return ;
-	free(tmp);
-	tmp = NULL;
-}
-
 int		ft_add_lcmd(t_gcmd *cmd, char *line, int i)
 {
 	t_lcmd	*elem;
@@ -44,9 +36,9 @@ int		ft_add_lcmd(t_gcmd *cmd, char *line, int i)
 	
 	cmd_str = cmd->rst != NULL ? ft_strjoinfree(cmd->rst, ft_strndup(line, i),
 		LEFT | RIGHT) : ft_strndup(line, i);
+	cmd->rst = NULL;
 	if (cmd_str == NULL)
 		return (-1);
-	ft_freenull(cmd->rst);
 	if (!(elem = ft_lcmd_new(cmd_str)))
 		return (-1);
 	ft_lcmd_push(elem, cmd);
@@ -64,13 +56,12 @@ int		ft_reset_cmd(t_gcmd *cmd)
 	while (elem != NULL)
 	{
 		tmp = elem->next;
-		ft_freenull(elem->cmd);
-		ft_freenull(elem);
+		ft_memdel((void **)&(elem->cmd));
+		ft_memdel((void **)&(elem));
 		elem = tmp;
 	}
 	cmd->head = NULL;
 	cmd->end = NULL;
-	ft_freenull(cmd->rst);
 	cmd->flag = 0; //Pas sur pour celui la.
 	return (0);
 }

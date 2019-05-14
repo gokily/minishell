@@ -116,7 +116,8 @@ char			**ft_cmdsplit(const char *s)
 		while (*s == ' ')
 			s++;
 		i = ft_elem_length(s);
-		tab[n] = malloc(sizeof(char) * (i + 1));
+		if (!(tab[n] = malloc(sizeof(char) * (i + 1))))
+			return (NULL);
 		j = ft_fill_tab_elem(tab[n], s, i);
 		ft_printf("the n%02d element is %i character long and is |%s|, it was written in %d characters\n", n, i, tab[n], j);
 		n++;

@@ -27,6 +27,7 @@ typedef struct		s_gcmd
 }					t_gcmd;
 
 int		ft_parse_line(char *line, t_gcmd *cmd);
+char			**ft_cmdsplit(const char *s);
 int		ft_do_cmd(t_gcmd *cmd);
 
 int		ft_add_lcmd(t_gcmd *cmd, char *line, int i);

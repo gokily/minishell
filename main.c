@@ -1,37 +1,10 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/types.h>
-#include <sys/wait.h>
 #include "libft/incl/libft.h"
 #include "libft/incl/ft_printf.h"
 #include "libft/incl/get_next_line.h"
 #include "minishell.h"
-
-/*
-int		ft_do_input(void)
-{
-	pid_t	pid;
-	pid_t	wpid;
-	int		status;
-
-	status = 0;
-pid = fork();
-
-		if (pid == 0)
-		{
-			if (ft_strcmp(tab[0], "ls") == 0)
-			{
-				execve("/bin/ls", tab++, envp);
-				printf("ls working\n");
-			}
-		}
-				printf("waiting for child %u to finish\n", pid);
-		wpid = waitpid(pid, &status, WUNTRACED);
-				printf("child proccess ended, return %u\n", wpid);
-
-}
-*/
 
 /*
 static int	ft_parse_semicol(t_linput *linput, t_cmd *cmd)

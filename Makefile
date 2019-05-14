@@ -4,6 +4,7 @@ SRC		=	main.c	\
 			ft_parse_line.c \
 			ft_do_cmd.c \
 			ft_cmd_handlers.c \
+			ft_cmdsplit.c \
 
 OBJ		=	$(SRC:.c=.o)
 

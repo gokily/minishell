@@ -2,7 +2,7 @@
 #include "libft/incl/libft.h"
 #include "minishell.h"
 
-static t_lcmd	*ft_lcmd_new(char *cmd_str)
+static inline t_lcmd	*ft_lcmd_new(char *cmd_str)
 {
 	t_lcmd	*lcmd;
 
@@ -15,7 +15,7 @@ static t_lcmd	*ft_lcmd_new(char *cmd_str)
 	return (lcmd);
 }
 
-static void	ft_lcmd_push(t_lcmd *elem, t_gcmd *cmd)
+static inline void	ft_lcmd_push(t_lcmd *elem, t_gcmd *cmd)
 {
 	if (cmd->head == NULL)
 	{

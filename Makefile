@@ -5,6 +5,9 @@ SRC		=	main.c	\
 			ft_do_cmd.c \
 			ft_cmd_handlers.c \
 			ft_cmdsplit.c \
+			ft_search_path.c \
+			ft_exec_cmd.c \
+			ft_error.c \
 
 OBJ		=	$(SRC:.c=.o)
 

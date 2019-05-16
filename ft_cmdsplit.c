@@ -42,7 +42,6 @@ static int		ft_count_word(const char *s)
 			nb++;
 		i++;
 	}
-	ft_printf("There are %d words\n", nb);
 	return (nb);
 }
 
@@ -119,10 +118,8 @@ char			**ft_cmdsplit(const char *s)
 		if (!(tab[n] = malloc(sizeof(char) * (i + 1))))
 			return (NULL);
 		j = ft_fill_tab_elem(tab[n], s, i);
-		ft_printf("the n%02d element is %i character long and is |%s|, it was written in %d characters\n", n, i, tab[n], j);
 		n++;
 		s += j;
-		ft_printf("s is at |%s|\n", s);
 	}
 	tab[n] = 0;
 	return (tab);

@@ -63,7 +63,7 @@ size_t			ft_elem_length(const char *s)
 			flag = !flag;
 			c = c == 0 ? *s : 0;
 		}
-		else
+		else if (flag == 1 || *s != '\\' || *(s + 1) == '\\')
 			i++;
 		s++;
 	}
@@ -87,7 +87,8 @@ size_t			ft_fill_tab_elem(char *elem, const char *s, size_t i)
 			flag = !flag;
 			c = c == 0 ? *s : 0;
 		}
-		else{
+		else if (flag == 1 || *s != '\\' || *(s + 1) == '\\')
+		{
 			*elem = *s;
 			i--;
 			elem++;

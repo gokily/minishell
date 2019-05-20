@@ -2,6 +2,8 @@
 #include "libft/incl/libft.h"
 #include "minishell.h"
 
+#include "libft/incl/ft_printf.h"
+
 static inline int	ft_add_rst(t_gcmd *cmd, char *line)
 {
 	if (cmd->rst != NULL)
@@ -36,25 +38,23 @@ int		ft_parse_line(char *line, t_gcmd *cmd)
 	i = 0;
 	while (line[i] != '\0')
 	{
-		if (line[i] == ';' && !(cmd->flag & QUOTE))
+		if (!(cmd->flag & QUOTE) && line[i] == ';')
 		{
 			if (ft_add_lcmd(cmd, line, i) == -1)
 				return (-1);
 			line += i + 1;
 			i = 0;
 		}
+		else if (!(cmd->flag & QUOTE)
+			&& line[i] == '\\' && ft_strchr(SHELLESC, line[i + 1]))
+			i += 2;
 		else 
 		{	
-			if (line[i] == 34 && !(cmd->flag & SQUOT))
+			if ((cmd->flag & DQUOT) && !(ft_strncmp("\\\"", line + i, 2)))
 			{
-				cmd->flag ^= DQUOT;
-				cmd->flag ^= QUOTE;
+				i += *(line + i) == '\0' ? 1 : 2;
 			}
-			else if (line[i] == 39 && !(cmd->flag & DQUOT))
-			{
-				cmd->flag ^= SQUOT;
-				cmd->flag ^= QUOTE;
-			}
+			cmd->flag = ft_check_quote(line[i], cmd->flag);
 			i++;
 		}
 	}

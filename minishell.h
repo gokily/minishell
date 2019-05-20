@@ -8,6 +8,13 @@
 # define NOFILE		1
 # define NOCMD		2
 
+# define SHELLESC " ;\"\'\\"
+# define DQUOTEESC "$`\"\\\n"
+
+# define ECHOFLAG "neE"
+# define ECHOE	1
+# define ECHON	1 << 1
+
 #include <stdio.h>
 
 typedef struct		s_lcmd
@@ -37,8 +44,13 @@ int		ft_search_path(char *exec_name, char **path, char **envp);
 int		ft_exec_cmd_direct(char **cmd_tab, char **envp);
 int		ft_exec_cmd_from_path(char **cmd_tab, char *path, char **envp);
 
+int		ft_find_builtin(char *cmd);
+int		ft_serve_builtin(int i, char **cmd_tab, t_gcmd *cmd);
+
 int		ft_add_lcmd(t_gcmd *cmd, char *line, int i);
 int		ft_reset_cmd(t_gcmd *cmd);
+
+int		ft_check_quote(char c, int flag);
 
 int		ft_error(char *filename, int err_no);
 

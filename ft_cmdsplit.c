@@ -14,8 +14,6 @@
 #include "libft/incl/libft.h"
 #include "minishell.h"
 
-#include "libft/incl/ft_printf.h"
-
 static int		ft_count_word(const char *s)
 {
 	size_t	nb;
@@ -27,19 +25,17 @@ static int		ft_count_word(const char *s)
 	flag = 0;
 	while (s[i] != '\0')
 	{
-		if (s[i] == 34 && !(flag & SQUOT))
+		if ((flag & DQUOT) && !(ft_strncmp("\\\"", s + i, 2)))
+				i += 2;
+		flag = ft_check_quote(s[i], flag);
+		if (!(flag & QUOTE))
 		{
-			flag ^= DQUOT;
-			flag ^= QUOTE;
+			if (s[i] == '\\' && ft_strchr(SHELLESC, s[i + 1]))
+				i++;
+			if ((i == 0 && s[i] != ' ' && s[i] != '\0')
+				|| (s[i] == ' ' && s[i + 1] != ' ' && s[i + 1] != '\0'))
+				nb++;			
 		}
-		else if (s[i] == 39 && !(flag & DQUOT))
-		{
-			flag ^= SQUOT;
-			flag ^= QUOTE;
-		}
-		if (s[i] != ' ' && (s[i + 1] == ' ' || s[i + 1] == '\0')
-			&& !(flag & QUOTE))
-			nb++;
 		i++;
 	}
 	return (nb);
@@ -48,22 +44,28 @@ static int		ft_count_word(const char *s)
 size_t			ft_elem_length(const char *s)
 {
 	size_t	i;
-	int		flag;
 	char	c;
 
 	i = 0;
-	flag = 0;
 	c = 0;
 	while (*s != '\0')
 	{
-		if (*s == ' ' && flag == 0)
-			return (i);
-		if ((*s == 34 || *s == 39) && (flag == 0 || *s == c))
+		if (c == 0 && *s == '\\' && *(s + 1) != '\0')
 		{
-			flag = !flag;
-			c = c == 0 ? *s : 0;
+			i++;
+			s++;
 		}
-		else if (flag == 1 || *s != '\\' || *(s + 1) == '\\')
+		else if (*s == ' ' && c == 0)
+			return (i);
+		else if ((*s == '\"' || *s == '\'') && (c == 0 || *s == c))
+			c = c == 0 ? *s : 0;
+		else if (c != 0)
+		{
+			if (c == '\"' && *s == '\\' && ft_strchr(DQUOTEESC, *(s + 1)))
+				s++;
+			i++;
+		}
+		else
 			i++;
 		s++;
 	}
@@ -74,29 +76,43 @@ size_t			ft_fill_tab_elem(char *elem, const char *s, size_t i)
 {
 	size_t		j;
 	char		c;
-	int			flag;
 
 	j = 0;
-	flag = 0;
 	c = 0;
 	elem[i] = '\0';
 	while (i != 0)
 	{
-		if ((*s == 34 || *s == 39) && (flag == 0 || *s == c))
+		if (c == 0 && *s == '\\')
 		{
-			flag = !flag;
-			c = c == 0 ? *s : 0;
+			s++;
+			*elem = *s;
+			i--;
+			elem++;
+			j++;
 		}
-		else if (flag == 1 || *s != '\\' || *(s + 1) == '\\')
+		else if (*s == ' ' && c == 0)
+			return (i);
+		else if ((*s == '\"' || *s == '\'') && (c == 0 || *s == c))
+			c = c == 0 ? *s : 0;
+		else if (c != 0)
+		{
+			if (c == '\"' && *s == '\\' && ft_strchr(DQUOTEESC, *(s + 1)))
+				s++;
+			*elem = *s;
+			i--;
+			elem++;
+		}
+		else
 		{
 			*elem = *s;
 			i--;
 			elem++;
 		}
+
 		s++;
-		j++;
+		j++; 
 	}
-	return (j + (flag ? 1 : 0));
+	return (j + (c != 0 ? 1 : 0));
 }
 
 char			**ft_cmdsplit(const char *s)

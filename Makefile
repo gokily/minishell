@@ -7,6 +7,9 @@ SRC		=	main.c	\
 			ft_cmdsplit.c \
 			ft_search_path.c \
 			ft_exec_cmd.c \
+			ft_serve_builtin.c \
+			ft_echo.c \
+			ft_util.c \
 			ft_error.c \
 
 OBJ		=	$(SRC:.c=.o)
@@ -27,7 +30,7 @@ $(NAME) : $(OBJ)
 $(LIBFT) :
 	make -C libft
 	
-%.o : %.c ./minishell.h
+%.o : %.c ./minishell.h ./builtin.h
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 clean :

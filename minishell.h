@@ -15,7 +15,7 @@
 # define ECHOE	1
 # define ECHON	1 << 1
 
-#include <stdio.h>
+#include "libft/incl/ft_printf.h"
 
 typedef struct		s_lcmd
 {

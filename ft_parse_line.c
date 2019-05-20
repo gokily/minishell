@@ -50,11 +50,9 @@ int		ft_parse_line(char *line, t_gcmd *cmd)
 			i += 2;
 		else 
 		{	
-			if ((cmd->flag & DQUOT) && !(ft_strncmp("\\\"", line + i, 2)))
-			{
-				i += *(line + i) == '\0' ? 1 : 2;
-			}
 			cmd->flag = ft_check_quote(line[i], cmd->flag);
+			if ((cmd->flag & DQUOT) && !(ft_strncmp("\\\"", line + i, 2)))
+				i += *(line + 2) == '\0' ? 1 : 2;
 			i++;
 		}
 	}

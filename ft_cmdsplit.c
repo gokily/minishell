@@ -26,7 +26,7 @@ static int		ft_count_word(const char *s)
 	while (s[i] != '\0')
 	{
 		if ((flag & DQUOT) && !(ft_strncmp("\\\"", s + i, 2)))
-				i += 2;
+				i += *(s + 2) == '\0' ? 1 : 2;
 		flag = ft_check_quote(s[i], flag);
 		if (!(flag & QUOTE))
 		{
@@ -85,10 +85,10 @@ size_t			ft_fill_tab_elem(char *elem, const char *s, size_t i)
 		if (c == 0 && *s == '\\')
 		{
 			s++;
+			j++;
 			*elem = *s;
 			i--;
 			elem++;
-			j++;
 		}
 		else if (*s == ' ' && c == 0)
 			return (i);
@@ -97,7 +97,10 @@ size_t			ft_fill_tab_elem(char *elem, const char *s, size_t i)
 		else if (c != 0)
 		{
 			if (c == '\"' && *s == '\\' && ft_strchr(DQUOTEESC, *(s + 1)))
+			{
 				s++;
+				j++;
+			}
 			*elem = *s;
 			i--;
 			elem++;
@@ -108,7 +111,6 @@ size_t			ft_fill_tab_elem(char *elem, const char *s, size_t i)
 			i--;
 			elem++;
 		}
-
 		s++;
 		j++; 
 	}
@@ -135,6 +137,8 @@ char			**ft_cmdsplit(const char *s)
 		if (!(tab[n] = malloc(sizeof(char) * (i + 1))))
 			return (NULL);
 		j = ft_fill_tab_elem(tab[n], s, i);
+
+		//ft_printf("Elem number %lu have %lu char, j is at %lu and s at |%s|\n", n, i, j, s);
 		n++;
 		s += j;
 	}

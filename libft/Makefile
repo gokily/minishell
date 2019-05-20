@@ -80,6 +80,7 @@ SRC_IO = \
 	ft_putstr_fd.c \
 	ft_putstr.c \
 	get_next_line.c \
+	ft_print_strtab.c \
 
 SRC_LST_PATH = lst/
 SRC_LST = \

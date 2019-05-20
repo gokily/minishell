@@ -81,6 +81,7 @@ void				ft_putchar_fd(char c, int fd);
 void				ft_putstr_fd(const char *s, int fd);
 void				ft_putendl_fd(const char *s, int fd);
 void				ft_putnbr_fd(int n, int fd);
+void				ft_print_strtab(char **tab);
 int					ft_strskipc(const char *s, char c);
 char				*ft_strjoinfree(char *s1, char *s2, char flag);
 char				*ft_strchrstr(const char *s, const char *c);

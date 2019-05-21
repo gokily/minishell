@@ -32,8 +32,9 @@ static int		ft_count_word(const char *s)
 		{
 			if (s[i] == '\\' && ft_strchr(SHELLESC, s[i + 1]))
 				i++;
-			if ((i == 0 && s[i] != ' ' && s[i] != '\0')
-				|| (s[i] == ' ' && s[i + 1] != ' ' && s[i + 1] != '\0'))
+			if ((i == 0 && !ft_strchr(" \t", s[i]) && s[i] != '\0')
+				|| (ft_strchr(" \t", s[i]) && !ft_strchr(" \t", s[i + 1])
+					&& s[i + 1] != '\0'))
 				nb++;			
 		}
 		i++;
@@ -55,7 +56,7 @@ size_t			ft_elem_length(const char *s)
 			i++;
 			s++;
 		}
-		else if (*s == ' ' && c == 0)
+		else if (ft_strchr(" \t", *s) && c == 0)
 			return (i);
 		else if ((*s == '\"' || *s == '\'') && (c == 0 || *s == c))
 			c = c == 0 ? *s : 0;
@@ -82,36 +83,18 @@ size_t			ft_fill_tab_elem(char *elem, const char *s, size_t i)
 	elem[i] = '\0';
 	while (i != 0)
 	{
-		if (c == 0 && *s == '\\')
+		if ((s[j] == '\"' || s[j] == '\'') && (c == 0 || s[j] == c))
+			c = c == 0 ? s[j] : 0;
+		else 
 		{
-			s++;
-			j++;
-			*elem = *s;
-			i--;
-			elem++;
-		}
-		else if (*s == ' ' && c == 0)
-			return (i);
-		else if ((*s == '\"' || *s == '\'') && (c == 0 || *s == c))
-			c = c == 0 ? *s : 0;
-		else if (c != 0)
-		{
-			if (c == '\"' && *s == '\\' && ft_strchr(DQUOTEESC, *(s + 1)))
-			{
-				s++;
+			if ((c == 0 && s[j] == '\\') || (c != 0 && c == '\"' && s[j] == '\\'
+				&& ft_strchr(DQUOTEESC, s[j + 1])))
 				j++;
-			}
-			*elem = *s;
+			*elem = s[j];
 			i--;
 			elem++;
+			
 		}
-		else
-		{
-			*elem = *s;
-			i--;
-			elem++;
-		}
-		s++;
 		j++; 
 	}
 	return (j + (c != 0 ? 1 : 0));
@@ -131,7 +114,7 @@ char			**ft_cmdsplit(const char *s)
 	n = 0;
 	while (*s != '\0')
 	{
-		while (*s == ' ')
+		while (ft_strchr(" \t", *s))
 			s++;
 		i = ft_elem_length(s);
 		if (!(tab[n] = malloc(sizeof(char) * (i + 1))))

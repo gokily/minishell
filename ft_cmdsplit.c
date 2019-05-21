@@ -51,23 +51,17 @@ size_t			ft_elem_length(const char *s)
 	c = 0;
 	while (*s != '\0')
 	{
-		if (c == 0 && *s == '\\' && *(s + 1) != '\0')
-		{
-			i++;
-			s++;
-		}
-		else if (ft_strchr(" \t", *s) && c == 0)
+		if (ft_strchr(" \t", *s) && c == 0)
 			return (i);
 		else if ((*s == '\"' || *s == '\'') && (c == 0 || *s == c))
 			c = c == 0 ? *s : 0;
-		else if (c != 0)
+		else 
 		{
-			if (c == '\"' && *s == '\\' && ft_strchr(DQUOTEESC, *(s + 1)))
+			if ((c == 0 && *s == '\\' && *(s + 1) != '\0') || (c != 0
+			&& c == '\"' && *s == '\\' && ft_strchr(DQUOTEESC, *(s + 1))))
 				s++;
 			i++;
 		}
-		else
-			i++;
 		s++;
 	}
 	return (i);
@@ -93,7 +87,6 @@ size_t			ft_fill_tab_elem(char *elem, const char *s, size_t i)
 			*elem = s[j];
 			i--;
 			elem++;
-			
 		}
 		j++; 
 	}

@@ -53,7 +53,7 @@ int		ft_parse_line(char *line, t_gcmd *cmd)
 			cmd->flag = ft_check_quote(line[i], cmd->flag);
 			if ((cmd->flag & DQUOT) && line[i] == '\\'
 				&& ft_strchr(DQUOTEESC, line[i + 1]))
-				i += line[i + 2] == '\0' ? 0 : 1;
+				i++;
 			i++;
 		}
 	}

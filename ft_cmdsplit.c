@@ -25,8 +25,6 @@ static int		ft_count_word(const char *s)
 	flag = 0;
 	while (s[i] != '\0')
 	{
-		if ((flag & DQUOT) && s[i] == '\\' && ft_strchr(DQUOTEESC, s[i + 1]))
-				i += s[i + 2] == '\0' ? 1 : 2;
 		flag = ft_check_quote(s[i], flag);
 		if (!(flag & QUOTE))
 		{

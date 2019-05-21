@@ -10,6 +10,7 @@ SRC		=	main.c	\
 			ft_serve_builtin.c \
 			ft_echo.c \
 			ft_echo_interpret.c \
+			ft_cd.c \
 			ft_util.c \
 			ft_error.c \
 

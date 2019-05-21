@@ -94,10 +94,12 @@ int		ft_echo(char **arg, t_gcmd *cmd)
 	cmd->flag = 0; // a voir
 	i = ft_check_flag(arg, &flag);
 	if (flag & ECHOE)
-		ret = ft_echo_direct(arg + i);
+		ret = ft_echo_interpret(arg + i);
 	else
 		ret = ft_echo_direct(arg + i);
+	if (ret != 0)
+		return (ret);
 	if (!(flag & ECHON))
 		write(STDOUT_FILENO, "\n", 1);
-	return (ret);
+	return (0);
 }

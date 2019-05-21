@@ -12,6 +12,7 @@
 # define DQUOTEESC "$`\"\\\n"
 
 # define ECHOFLAG "neE"
+# define ECHOESC "\\abefnrtvc"
 # define ECHOE	1
 # define ECHON	1 << 1
 
@@ -52,6 +53,7 @@ int		ft_reset_cmd(t_gcmd *cmd);
 
 int		ft_check_quote(char c, int flag);
 
+int						ft_echo_interpret(char **str_tab);
 int		ft_error(char *filename, int err_no);
 
 

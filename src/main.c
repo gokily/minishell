@@ -1,9 +1,9 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "libft/incl/libft.h"
-#include "libft/incl/ft_printf.h"
-#include "libft/incl/get_next_line.h"
+#include "libft.h"
+#include "ft_printf.h"
+#include "get_next_line.h"
 #include "minishell.h"
 
 int			main(int ac, char **av, char **envp)

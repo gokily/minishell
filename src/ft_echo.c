@@ -1,6 +1,6 @@
 #include <unistd.h>
 #include <stdlib.h>
-#include "libft/incl/libft.h"
+#include "libft.h"
 #include "minishell.h"
 
 static inline int	ft_only_flag(char *option)

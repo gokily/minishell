@@ -1,9 +1,9 @@
-#include "libft/incl/libft.h"
+#include "libft.h"
 #include "minishell.h"
 #include "builtin.h"
 
 
-#include "libft/incl/ft_printf.h"
+#include "ft_printf.h"
 
 int		ft_find_builtin(char *cmd)
 {

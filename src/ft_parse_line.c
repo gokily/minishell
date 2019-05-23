@@ -1,8 +1,8 @@
 #include <stdlib.h>
-#include "libft/incl/libft.h"
+#include "libft.h"
 #include "minishell.h"
 
-#include "libft/incl/ft_printf.h"
+#include "ft_printf.h"
 
 static inline int	ft_add_rst(t_gcmd *cmd, char *line)
 {

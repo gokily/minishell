@@ -1,6 +1,6 @@
 #include <unistd.h>
 #include <stdlib.h>
-#include "libft/incl/libft.h"
+#include "libft.h"
 #include "minishell.h"
 
 static inline size_t ft_interpret_len(char **str_tab)

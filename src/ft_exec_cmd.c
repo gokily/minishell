@@ -3,7 +3,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-#include "libft/incl/libft.h"
+#include "libft.h"
 #include "minishell.h"
 
 

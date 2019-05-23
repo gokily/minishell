@@ -1,9 +1,9 @@
 #include <unistd.h>
-#include "libft/incl/libft.h"
+#include "libft.h"
 #include "minishell.h"
 
 
-#include "libft/incl/ft_printf.h"
+#include "ft_printf.h"
 
 int		ft_do_cmd(t_gcmd *cmd)
 {

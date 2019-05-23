@@ -1,7 +1,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <sys/stat.h>
-#include "libft/incl/libft.h"
+#include "libft.h"
 #include "minishell.h"
 
 static inline int		ft_cd_error(int i)

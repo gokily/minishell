@@ -1,8 +1,20 @@
-NAME	=	minishell
+AUTHOR				= gly
+NAME				= minishell
+CC					= gcc
+CFLAGS				= -Wall -Wextra -Werror -g
+INC_PATH			= \
+	incl/ \
+	libft/incl/
+INC					= $(addprefix -I, $(INC_PATH))
+OBJ_PATH			= obj/
+SRC_PATH			= src/
+LIBFT				= ./libft/libft.a
+LIBFTFLAG			= -lft -L libft
 
-SRC		=	main.c	\
-			ft_parse_line.c \
-			ft_do_cmd.c \
+SRC			= \
+	main.c	\
+	ft_parse_line.c \
+	ft_do_cmd.c \
 			ft_cmd_handlers.c \
 			ft_cmdsplit.c \
 			ft_search_path.c \
@@ -14,30 +26,28 @@ SRC		=	main.c	\
 			ft_util.c \
 			ft_error.c \
 
-OBJ		=	$(SRC:.c=.o)
+OBJ = $(addprefix $(OBJ_PATH), $(SRC:.c=.o))
 
-CC		=	gcc
+all	:	$(LIBFT) $(NAME) auteur
 
-CFLAGS	=	-g -Wall -Wextra -Werror
+$(NAME) : $(OBJ_PATH) $(OBJ)
+	$(CC) $(CFLAGS) $(INC) -o $(NAME) $(OBJ) $(LIBFTFLAG)
 
-LIBFT	=	./libft/libft.a
+$(OBJ_PATH) :
+	mkdir -p $@
 
-LIBFTFLAG	=	-lft -L libft
-
-all	:	$(LIBFT) $(NAME) 
-
-$(NAME) : $(OBJ)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LIBFTFLAG)
-	
 $(LIBFT) :
 	make -C libft
 	
-%.o : %.c ./minishell.h ./builtin.h
-	$(CC) $(CFLAGS) -o $@ -c $<
+$(OBJ_PATH)%.o	: $(SRC_PATH)%.c 
+	$(CC) $(CFLAGS) $(INC) -o $@ -c $<
 
+auteur:
+	echo $(AUTHOR) > auteur
+	
 clean :
 	make -C libft clean
-	/bin/rm -f $(OBJ)
+	/bin/rm -drf $(OBJ_PATH)
 
 fclean : clean
 	/bin/rm -f $(NAME) $(LIBFT)

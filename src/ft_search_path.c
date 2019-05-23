@@ -1,6 +1,6 @@
 
 #include <dirent.h>
-#include "libft/incl/libft.h"
+#include "libft.h"
 #include "minishell.h"
 
 static inline int	ft_exec_exist_in_path(char *filename, char *pathname)

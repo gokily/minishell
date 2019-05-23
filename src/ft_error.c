@@ -1,5 +1,5 @@
 #include <unistd.h>
-#include "libft/incl/ft_printf.h"
+#include "ft_printf.h"
 #include "minishell.h"
 
 int		ft_error(char *filename, int err_no)

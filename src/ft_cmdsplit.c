@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#include "libft/incl/libft.h"
+#include "libft.h"
 #include "minishell.h"
 
 static int		ft_count_word(const char *s)

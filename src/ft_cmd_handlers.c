@@ -1,5 +1,5 @@
 #include <stdlib.h>
-#include "libft/incl/libft.h"
+#include "libft.h"
 #include "minishell.h"
 
 static inline t_lcmd	*ft_lcmd_new(char *cmd_str)

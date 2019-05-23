@@ -23,6 +23,7 @@ SRC			= \
 			ft_echo.c \
 			ft_echo_interpret.c \
 			ft_cd.c \
+			ft_env.c \
 			ft_util.c \
 			ft_error.c \
 
@@ -44,7 +45,7 @@ $(OBJ_PATH)%.o	: $(SRC_PATH)%.c
 
 auteur:
 	echo $(AUTHOR) > auteur
-	
+
 clean :
 	make -C libft clean
 	/bin/rm -drf $(OBJ_PATH)

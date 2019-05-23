@@ -16,8 +16,6 @@
 # define ECHOE	1
 # define ECHON	1 << 1
 
-# define ENVFLAG "Ciu"
-
 #include "ft_printf.h"
 
 typedef struct		s_lcmd

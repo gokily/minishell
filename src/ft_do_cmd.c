@@ -18,8 +18,6 @@ int		ft_do_cmd(t_gcmd *cmd)
 	while (elem != NULL)
 	{
 		cmd_tab = ft_cmdsplit(elem->cmd);
-
-
 		if ((i = ft_find_builtin(cmd_tab[0])) != -1)
 			ft_serve_builtin(i, cmd_tab, cmd); // return value ?
 		else

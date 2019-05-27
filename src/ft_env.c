@@ -1,50 +1,56 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_env.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gly <marvin@42.fr>                         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/05/27 10:55:09 by gly               #+#    #+#             */
+/*   Updated: 2019/05/27 11:20:27 by gly              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include <unistd.h>
+#include <sys/wait.h>
 #include "libft.h"
+#include "ft_printf.h"
 #include "minishell.h"
 #include "ft_env.h"
 
-static inline int		ft_check_c(char **arg, size_t *i, t_env *env)
-{
-	if (arg[*i][2] == '\0')
-	{
-		env->dir = ft_strdup(arg[*i + 1]);
-		*i++;
-	}
-	else
-		env->dir = ft_strdup(arg[*i] + 2);
-	return (env->dir == NULL ? -1 : 0);
-}
-
-static inline int		ft_check_u(char **arg, size_t *i, t_env *env)
+static inline int		ft_check_u(char **arg, size_t *i, char **envp, size_t j)
 {
 	int		status;
 
-	if (arg[*i][2] == '\0')
+	if (arg[*i][j] == '\0')
 	{
-		status = ft_add_varlst(arg[*i + 1], env);
-		*i++;
+		status = ft_del_envvar(arg[*i + 1], envp);
+		(*i)++;
 	}
 	else
-		status = ft_add_varlst(arg[*i] + 2, env);
+		status = ft_del_envvar(arg[*i] + j, envp);
 	return (status);
 }
 
-static inline size_t	ft_check_flag2(char **arg, int *i, t_gcmd *cmd,
-	t_env *env, int j)
+static inline size_t	ft_check_flag2(char **arg, size_t *i, char **envp,
+		size_t j)
 {
 	int		status;
 
 	status = 0;	
-	if (arg[i][1] == 'i')
-		cmd->envp = NULL;
-	else if (arg[i][1] == 'C')
-		status = ft_check_c(arg, &i, env);
-	else if (arg[i][1] == 'u')
-		status = ft_check_u(arg, &i, env);
-	if (status == -1)
-		return (-1);
-
+	if (arg[*i][j] == 'i')
+	{
+		envp = NULL;
+		status = ft_check_flag2(arg, i, envp, j + 1);
+	}
+	else if (arg[*i][j] == 'u')
+		status = ft_check_u(arg, i, envp, j + 1);
+	else
+		ft_printf("env: illegal option -- %c\nusage: env [-i] [-u name]\n\
+			[name=value ...] [utility [argument ...]]\n", arg[*i][j]);
+	return (status);
 }
-static inline size_t	ft_check_flag(char **arg, t_gcmd *cmd, t_env *env)
+
+static inline size_t	ft_check_flag(char **arg, char **envp)
 {
 	size_t	i;
 	int		status;
@@ -54,33 +60,47 @@ static inline size_t	ft_check_flag(char **arg, t_gcmd *cmd, t_env *env)
 	while (arg[i] != NULL)
 	{	
 		if (arg[i][0] == '-')
-		{
-			status = ft_check_flag2(arg, &i, cmd, env, 1);
-		
-		}
+			status = ft_check_flag2(arg, &i, envp, 1);
 		i++;
 	}
 	return (i);
 }
-
-t_env	*ft_env_new(void)
+static inline int		ft_check_var(char **arg, size_t *i, char **envp)
 {
-	t_env	*env;
-
-	if (!(env = malloc(sizeof(env))))
-		return (NULL);
-	env->int = 0;
-	env->varlst = NULL;
-	env->dir = NULL;
-	return (env);
+	if (arg[*i] == NULL)
+		return (0);
+	while (arg[*i] != NULL && ft_strchr(arg[*i], '='))
+	{
+		if (ft_add_envvar(arg[*i], envp) == -1)
+			return (-1);
+		(*i)++;
+	}
+	return (0);
 }
 
 int		ft_env(char **arg, t_gcmd *cmd)
 {
 	size_t	i;
-	t_env	*env;
+	char	**envp;
 
-	if (!(env = ft_env_new()))
-		return (-1);
-	i = ft_check_flag(arg, cmd, env);
+	pid_t	pid;
+	pid_t	wpid;
+	int		status;
+
+	status = 0;
+	pid = fork();
+	if (pid == 0)
+	{
+		if (!(envp = ft_cpy_strtab((const char **)cmd->envp)))
+			return (-1);
+		i = ft_check_flag(arg, envp);
+		if (ft_check_var(arg, &i, envp) == -1)
+			return (-1);
+		ft_do_cmd(cmd);
+		return (0);
+	}
+	wpid = waitpid(pid, &status, WUNTRACED);
+	if (wpid == -1)
+		write(STDOUT_FILENO, "WPID ERROR\n", 11);
+	return (status);
 }

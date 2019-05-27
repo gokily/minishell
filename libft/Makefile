@@ -141,6 +141,7 @@ SRC_STR = \
 	ft_strstr.c \
 	ft_strsub.c \
 	ft_strtrim.c \
+	ft_cpy_strtab.c \
 
 OBJ = $(addprefix $(OBJ_PATH), $(SRCS:.c=.o))
 

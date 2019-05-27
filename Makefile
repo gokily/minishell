@@ -24,6 +24,7 @@ SRC			= \
 			ft_echo_interpret.c \
 			ft_cd.c \
 			ft_env.c \
+			ft_env_util.c \
 			ft_util.c \
 			ft_error.c \
 

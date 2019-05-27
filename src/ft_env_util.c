@@ -2,13 +2,13 @@
 #include "libft.h"
 #include "minishell.h"
 
-int     ft_del_envvar(char *var, char **envp)
+char    **ft_del_envvar(char *var, char **envp)
 {
 	size_t	i;
 
 	i = 0;
 	if (envp == NULL)
-		return (0);
+		return (NULL);
 	while (envp[i] != NULL)
 	{
 		if (ft_strcmp(var, envp[i]) == 0)
@@ -19,11 +19,11 @@ int     ft_del_envvar(char *var, char **envp)
 				i++;
 			}
 			envp[i] = NULL;
-			return (0);
+			return (envp);
 		}
 		i++;
 	}
-	return (0);
+	return (envp);
 }
 
 static inline char	**ft_add_var2envp(char *var, char **envp)
@@ -74,7 +74,10 @@ char	**ft_add_envvar(char *var, char **envp)
 	while (var[i] != '=')
 		i++;
 	if (envp == NULL && (j = ft_find_var(envp, var, i) != -1))
+	{
+		free(envp[j]);
 		envp[j] = var;
+	}
 	else
 		return (ft_add_var2envp(var, envp));
 	return (envp);

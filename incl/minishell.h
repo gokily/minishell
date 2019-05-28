@@ -38,6 +38,7 @@ int		ft_parse_line(char *line, t_gcmd *cmd);
 
 char			**ft_cmdsplit(const char *s);
 
+int		ft_do_single_cmd(char **cmd_tab, t_gcmd *cmd);
 int		ft_do_cmd(t_gcmd *cmd);
 
 int		ft_create_path_tab(char **envp, char ***path_tab);

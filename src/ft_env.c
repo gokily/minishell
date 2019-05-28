@@ -94,7 +94,8 @@ int					ft_env(char **arg, t_gcmd *cmd)
 		ft_check_flag(arg, &i, cmd);
 		if (ft_check_var(arg, &i, cmd) == -1)
 			return (-1);
-		ft_do_cmd(cmd); // il faut changer ce truc
+		if (ft_do_single_cmd(arg + i, cmd) == -1)
+			return (-1);
 		return (0);
 	}
 	wpid = waitpid(pid, &status, WUNTRACED);

@@ -43,15 +43,11 @@ int		ft_create_path_tab(char **envp, char ***path_tab)
 	return (0);
 }
 
-int		ft_search_path(char *exec_name, char **path, char **envp)
+int		ft_search_path(char *exec_name, char **path, char **path_tab)
 {
-	char	**path_tab;
 	size_t	i;
 
 	i = 0;
-	path_tab = NULL;
-	if ((ft_create_path_tab(envp, &path_tab)) == -1)
-		return (-1);
 	if (path_tab != NULL)
 	{
 		while (path_tab[i] != NULL)

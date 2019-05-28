@@ -16,7 +16,9 @@ int			main(int ac, char **av, char **envp)
 	cmd.head = NULL;
 	cmd.end = NULL;
 	cmd.rst = NULL;
-	cmd.envp = envp;
+	if (!(cmd.envp = ft_cpy_strtab((const char **)envp)))
+		return (1);
+	cmd.path = NULL;
 	if (ac != 1)
 	{
 		printf("%s\n", av[1]);

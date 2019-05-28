@@ -22,7 +22,7 @@ static inline int	ft_exec_exist_in_path(char *filename, char *pathname)
 	return (0);
 }
 
-static inline char	**ft_create_path_tab(char **envp)
+int		ft_create_path_tab(char **envp, char ***path_tab)
 {
 	char	**path;
 	size_t	i;
@@ -34,12 +34,13 @@ static inline char	**ft_create_path_tab(char **envp)
 		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
 		{
 			if ((path = ft_strsplit((envp[i]) + 5, ':')) == NULL)
-				return (NULL);
-			return (path);
+				return (-1);
+			*path_tab = path;
+			return (1);
 		}
 		i++;
 	}
-	return (NULL);
+	return (0);
 }
 
 int		ft_search_path(char *exec_name, char **path, char **envp)
@@ -48,16 +49,20 @@ int		ft_search_path(char *exec_name, char **path, char **envp)
 	size_t	i;
 
 	i = 0;
-	if ((path_tab = ft_create_path_tab(envp)) == NULL)
+	path_tab = NULL;
+	if ((ft_create_path_tab(envp, &path_tab)) == -1)
 		return (-1);
-	while (path_tab[i] != NULL)
+	if (path_tab != NULL)
 	{
-		if (ft_exec_exist_in_path(exec_name, path_tab[i]) == 1)
+		while (path_tab[i] != NULL)
 		{
-			*path = path_tab[i];
-			return (0);
+			if (ft_exec_exist_in_path(exec_name, path_tab[i]) == 1)
+			{
+				*path = path_tab[i];
+				return (0);
+			}
+			i++;
 		}
-		i++;
 	}
 	ft_error(exec_name, NOCMD);
 	return (0);

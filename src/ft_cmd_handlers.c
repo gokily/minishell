@@ -8,7 +8,6 @@ static inline t_lcmd	*ft_lcmd_new(char *cmd_str)
 
 	if (!(lcmd = malloc(sizeof(t_lcmd))))
 		return (NULL);
-	lcmd->n = 0;
 	if (!(lcmd->cmd = cmd_str))
 		return (NULL);
 	lcmd->next = NULL;

@@ -21,7 +21,6 @@
 typedef struct		s_lcmd
 {
 	struct s_lcmd	*next;
-	int				n;
 	char			*cmd;
 }					t_lcmd;
 
@@ -32,6 +31,7 @@ typedef struct		s_gcmd
 	int				flag;
 	char			*rst;
 	char			**envp;
+	char			**path;
 }					t_gcmd;
 
 int		ft_parse_line(char *line, t_gcmd *cmd);
@@ -40,6 +40,7 @@ char			**ft_cmdsplit(const char *s);
 
 int		ft_do_cmd(t_gcmd *cmd);
 
+int		ft_create_path_tab(char **envp, char ***path_tab);
 int		ft_search_path(char *exec_name, char **path, char **envp);
 
 int		ft_exec_cmd_direct(char **cmd_tab, char **envp);

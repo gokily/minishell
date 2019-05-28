@@ -3,8 +3,8 @@
 
 # define ENVFLAG "Ciu"
 
-int		ft_add_envvar(char *var, char **envp);
-int     ft_del_envvar(char *var, char **envp);
+char	**ft_add_envvar(char *var, char **envp);
+char	**ft_del_envvar(char *var, char **envp);
 
 typedef struct			s_varlst
 {

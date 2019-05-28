@@ -23,7 +23,7 @@ int		ft_do_single_cmd(char **cmd_tab, t_gcmd *cmd)
 		}
 		else
 		{
-			if (cmd->path != NULL)
+			if (cmd->path == NULL)
 				if (ft_create_path_tab(cmd->envp, &path_tab) == -1)
 					return (-1);
 			ft_search_path(cmd_tab[0], &path, cmd->path ? cmd->path : path_tab);
